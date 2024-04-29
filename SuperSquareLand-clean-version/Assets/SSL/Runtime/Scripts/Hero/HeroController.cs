@@ -16,4 +16,28 @@ public class HeroController : MonoBehaviour
         GUILayout.Label(gameObject.name);
         GUILayout.EndVertical();
     }
+
+    private void Update()
+    {
+        _entity.SetMoveDirX(GetInputMoveX());
+    }
+
+    private float GetInputMoveX()
+    {
+        float inputMoveX = 0f;
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.Q))
+        {
+            //Negative means : To the left <=
+            inputMoveX = -1f;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            //Positive means : To the right =>
+            inputMoveX = 1f;
+        }
+
+        return inputMoveX;
+    }
 }
