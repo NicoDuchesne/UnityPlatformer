@@ -10,6 +10,11 @@ public class HeroEntity : MonoBehaviour
     private float _horizontalSpeed = 0f;
     private float _moveDirX = 0f;
 
+    [Header("Dash")]
+    [SerializeField] private HeroDashSettings _dashSettings;
+    private float _dashCooldown = 2f;
+    private bool isDashing = false;
+
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
     private float _orientX = 1f;
@@ -24,14 +29,44 @@ public class HeroEntity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_AreOrientAndMovementOpposite())
+        if (_dashCooldown > 0f)
         {
-            _TurnBack();
-        } else
-        {
-            _UpdateHorizontalSpeed();
-            _ChangeOrientFromHorinzontalMovement();
+            _dashCooldown -= Time.fixedDeltaTime;
         }
+
+        if (_dashCooldown <= 0f && Input.GetKey(KeyCode.E))
+        {
+            if (_dashSettings.duration > 0f)
+            {
+                _horizontalSpeed = 40f;
+                _dashSettings.duration -= Time.fixedDeltaTime;
+                isDashing = true;
+            }
+            else
+            {
+                isDashing = false;
+                _horizontalSpeed = 0f;
+                _dashCooldown = 2f;
+                _dashSettings.duration = 0.1f;
+            }
+        }
+
+
+        if (!isDashing)
+        {
+            if (_AreOrientAndMovementOpposite())
+            {
+                _TurnBack();
+            }
+            else
+            {
+                _UpdateHorizontalSpeed();
+                _ChangeOrientFromHorinzontalMovement();
+            }
+        }
+
+        
+
         _ApplyHorizontalSpeed();
     }
 
@@ -45,6 +80,7 @@ public class HeroEntity : MonoBehaviour
             _Decelerate();
         }
     }
+
 
     private bool _AreOrientAndMovementOpposite()
     {
@@ -113,6 +149,7 @@ public class HeroEntity : MonoBehaviour
         GUILayout.Label($"MoveDirX = {_moveDirX}");
         GUILayout.Label($"OrientX = {_orientX}");
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
+        GUILayout.Label($"Dash Cooldown = {_dashCooldown}");
         GUILayout.EndVertical();
     }
 }
