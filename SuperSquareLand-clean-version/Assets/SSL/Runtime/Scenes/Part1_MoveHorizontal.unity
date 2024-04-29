@@ -975,6 +975,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SquareHero_Entity
       objectReference: {fileID: 0}
+    - target: {fileID: 7212136366118121974, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
