@@ -24,8 +24,14 @@ public class HeroEntity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _UpdateHorizontalSpeed();
-        _ChangeOrientFromHorinzontalMovement();
+        if (_AreOrientAndMovementOpposite())
+        {
+            _TurnBack();
+        } else
+        {
+            _UpdateHorizontalSpeed();
+            _ChangeOrientFromHorinzontalMovement();
+        }
         _ApplyHorizontalSpeed();
     }
 
@@ -37,6 +43,21 @@ public class HeroEntity : MonoBehaviour
         } else
         {
             _Decelerate();
+        }
+    }
+
+    private bool _AreOrientAndMovementOpposite()
+    {
+        return _moveDirX * _orientX < 0f;
+    }
+
+    private void _TurnBack()
+    {
+        _horizontalSpeed -= _movementsSettings.turnBackFrictions * Time.fixedDeltaTime;
+        if (_horizontalSpeed < 0f)
+        {
+            _horizontalSpeed = 0f;
+            _ChangeOrientFromHorinzontalMovement();
         }
     }
 
