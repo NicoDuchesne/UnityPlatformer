@@ -48,6 +48,12 @@ public class HeroEntity : MonoBehaviour
 
 
     //Public functions
+    public bool IsJumpMinDurationReached => _jumpTimer >= _jumpSettings.jumpMinDuration;
+    public bool IsJumpImpulsing => _jumpState == JumpState.JumpImpulsion;
+    public void StopJumpImpulsion()
+    {
+        _jumpState = JumpState.Falling;
+    }
     public bool IsJumping => _jumpState != JumpState.NotJumping;
     public void JumpStart()
     {

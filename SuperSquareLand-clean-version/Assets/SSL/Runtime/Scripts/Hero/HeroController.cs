@@ -28,6 +28,19 @@ public class HeroController : MonoBehaviour
                 _entity.JumpStart();
             }
         }
+
+        if (_entity.IsJumpImpulsing)
+        {
+            if (!_GetInputJump() && _entity.IsJumpMinDurationReached)
+            {
+                _entity.StopJumpImpulsion();
+            }
+        }
+    }
+
+    private bool _GetInputJump()
+    {
+        return Input.GetKey(KeyCode.Space);
     }
 
     private bool _GetInputDownJump()

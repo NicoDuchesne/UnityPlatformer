@@ -1069,10 +1069,30 @@ PrefabInstance:
       propertyPath: _guiDebug
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _groundDetector
+      value: 
+      objectReference: {fileID: 732721623840024184}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpSettings.jumpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpFallSettings.fallGravity
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpFallSettings.fallSpeedMax
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6771865885331362632, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: m_Name
       value: SquareHero_Entity
       objectReference: {fileID: 0}
+    - target: {fileID: 7212136366118121974, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 3aa90e189c58491468a67afb3329e400, type: 2}
     - target: {fileID: 7212136366118121974, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: m_Constraints
       value: 4
@@ -1109,7 +1129,7 @@ MonoBehaviour:
   _detectionLength: 0.1
   _groundLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1001 &7942448798136466883
 PrefabInstance:
   m_ObjectHideFlags: 0
