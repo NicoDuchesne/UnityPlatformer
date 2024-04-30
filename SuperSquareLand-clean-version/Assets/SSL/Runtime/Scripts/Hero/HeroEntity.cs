@@ -33,7 +33,28 @@ public class HeroEntity : MonoBehaviour
     [SerializeField] private GroundDetector _groundDetector;
     public bool IsTouchingGround { get; private set; }
 
+    [Header("Jump")]
+    [SerializeField] private HeroJumpSettings _jumpSettings;
+    [SerializeField] private HeroFallSettings _jumpFallSettings;
+
+    enum JumpState
+    {
+        NotJumping,
+        JumpImpulsion,
+        Falling
+    }
+    private JumpState _jumpState = JumpState.NotJumping;
+    private float _jumpTimer = 0f;
+
+
     //Public functions
+    public bool IsJumping => _jumpState != JumpState.NotJumping;
+    public void JumpStart()
+    {
+        _jumpState = JumpState.JumpImpulsion;
+        _jumpTimer = 0f;
+    }
+
     public void SetMoveDirX(float dirX)
     {
         _moveDirX = dirX;
@@ -68,32 +89,81 @@ public class HeroEntity : MonoBehaviour
 
         //if (!isDashing)
         //{
-            //Code du cours
-            _ApplyGroundDetection();
 
-            if (_AreOrientAndMovementOpposite())
+            //Partie du code du cours à pas executer
+
+        //}
+
+        _ApplyGroundDetection();
+
+        if (_AreOrientAndMovementOpposite())
+        {
+            _TurnBack();
+        }
+        else
+        {
+            _UpdateHorizontalSpeed();
+            _ChangeOrientFromHorinzontalMovement();
+        }
+
+        if (IsJumping)
+        {
+            _UpdateJump();
+        }
+        else
+        {
+            if (!IsTouchingGround)
             {
-                _TurnBack();
+                _ApplyFallGravity(_fallSettings);
             }
             else
             {
-                _UpdateHorizontalSpeed();
-                _ChangeOrientFromHorinzontalMovement();
+                _ResetVerticalSpeed();
             }
-        //}
-
-        if (!IsTouchingGround)
-        {
-            _ApplyFallGravity();
-        } else
-        {
-            _ResetVerticalSpeed();
         }
 
         _ApplyHorizontalSpeed();
         _ApplyVerticalSpeed();
     }
 
+    //Functions for Jump
+    private void _UpdateJumpStateImpulsion()
+    {
+        _jumpTimer += Time.fixedDeltaTime;
+        if (_jumpTimer < _jumpSettings.jumpMaxDuration)
+        {
+            _verticalSpeed = _jumpSettings.jumpSpeed;
+        } else
+        {
+            _jumpState = JumpState.Falling;
+        }
+    }
+
+    private void _UpdateJumpStateFalling()
+    {
+        if(!IsTouchingGround)
+        {
+            _ApplyFallGravity(_jumpFallSettings);
+        } else
+        {
+            _ResetVerticalSpeed();
+            _jumpState = JumpState.NotJumping;
+        }
+    }
+
+    private void _UpdateJump()
+    {
+        switch (_jumpState)
+        {
+            case JumpState.JumpImpulsion:
+                _UpdateJumpStateImpulsion();
+                break;
+
+            case JumpState.Falling:
+                _UpdateJumpStateFalling();
+                break;
+        }
+    }
 
     //Functions for vertical movements
     private void _ResetVerticalSpeed()
@@ -104,12 +174,12 @@ public class HeroEntity : MonoBehaviour
     {
         IsTouchingGround = _groundDetector.DetectGroundNearBy();
     }
-    private void _ApplyFallGravity()
+    private void _ApplyFallGravity(HeroFallSettings settings)
     {
-        _verticalSpeed -= _fallSettings.fallGravity * Time.fixedDeltaTime;
-        if (_verticalSpeed < -_fallSettings.fallSpeedMax)
+        _verticalSpeed -= settings.fallGravity * Time.fixedDeltaTime;
+        if (_verticalSpeed < -settings.fallSpeedMax)
         {
-            _verticalSpeed = -_fallSettings.fallSpeedMax;
+            _verticalSpeed = -settings.fallSpeedMax;
         }
     }
 
@@ -209,6 +279,7 @@ public class HeroEntity : MonoBehaviour
         {
             GUILayout.Label("InAir");
         }
+        GUILayout.Label($"Jump State = {_jumpState}");
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
         GUILayout.Label($"Vertical Speed = {_verticalSpeed}");
         GUILayout.Label($"Dash Cooldown = {_dashCooldown}");
