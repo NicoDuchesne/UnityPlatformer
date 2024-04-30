@@ -13,7 +13,7 @@ public class HeroEntity : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
-    private float _dashCooldown = 2f;
+    [SerializeField] private float _dashCooldown = 2f;
     private bool isDashing = false;
 
     [Header("Orientation")]
@@ -29,6 +29,10 @@ public class HeroEntity : MonoBehaviour
     [Header("Fall")]
     [SerializeField] private HeroFallSettings _fallSettings;
 
+    [Header("Ground")]
+    [SerializeField] private GroundDetector _groundDetector;
+    public bool IsTouchingGround { get; private set; }
+
     //Public functions
     public void SetMoveDirX(float dirX)
     {
@@ -39,32 +43,34 @@ public class HeroEntity : MonoBehaviour
     private void FixedUpdate()
     {
         //Added code for dash
-        if (_dashCooldown > 0f)
-        {
-            _dashCooldown -= Time.fixedDeltaTime;
-        }
+        //if (_dashCooldown > 0f)
+        //{
+        //    _dashCooldown -= Time.fixedDeltaTime;
+        //}
 
-        if (_dashCooldown <= 0f && Input.GetKey(KeyCode.E))
-        {
-            if (_dashSettings.duration > 0f)
-            {
-                _horizontalSpeed = 40f;
-                _dashSettings.duration -= Time.fixedDeltaTime;
-                isDashing = true;
-            }
-            else
-            {
-                isDashing = false;
-                _horizontalSpeed = 0f;
-                _dashCooldown = 2f;
-                _dashSettings.duration = 0.1f;
-            }
-        }
+        //if (_dashCooldown <= 0f && Input.GetKey(KeyCode.E))
+        //{
+        //    if (_dashSettings.duration > 0f)
+        //    {
+        //        _horizontalSpeed = 40f;
+        //        _dashSettings.duration -= Time.fixedDeltaTime;
+        //        isDashing = true;
+        //    }
+        //    else
+        //    {
+        //        isDashing = false;
+        //        _horizontalSpeed = 0f;
+        //        _dashCooldown = 2f;
+        //        _dashSettings.duration = 0.1f;
+        //    }
+        //}
 
 
-        if (!isDashing)
-        {
+        //if (!isDashing)
+        //{
             //Code du cours
+            _ApplyGroundDetection();
+
             if (_AreOrientAndMovementOpposite())
             {
                 _TurnBack();
@@ -74,14 +80,30 @@ public class HeroEntity : MonoBehaviour
                 _UpdateHorizontalSpeed();
                 _ChangeOrientFromHorinzontalMovement();
             }
+        //}
+
+        if (!IsTouchingGround)
+        {
+            _ApplyFallGravity();
+        } else
+        {
+            _ResetVerticalSpeed();
         }
 
-        _ApplyFallGravity();
-
         _ApplyHorizontalSpeed();
-        _ApllyVerticalSpeed();
+        _ApplyVerticalSpeed();
     }
+
+
     //Functions for vertical movements
+    private void _ResetVerticalSpeed()
+    {
+        _verticalSpeed = 0f;
+    }
+    private void _ApplyGroundDetection()
+    {
+        IsTouchingGround = _groundDetector.DetectGroundNearBy();
+    }
     private void _ApplyFallGravity()
     {
         _verticalSpeed -= _fallSettings.fallGravity * Time.fixedDeltaTime;
@@ -91,12 +113,13 @@ public class HeroEntity : MonoBehaviour
         }
     }
 
-    private void _ApllyVerticalSpeed()
+    private void _ApplyVerticalSpeed()
     {
         Vector2 velocity = _rigidbody.velocity;
         velocity.y = _verticalSpeed;
         _rigidbody.velocity = velocity;
     }
+
 
     //Functions for horizontal movements
     private void _UpdateHorizontalSpeed()
@@ -179,6 +202,13 @@ public class HeroEntity : MonoBehaviour
         GUILayout.Label(gameObject.name);
         GUILayout.Label($"MoveDirX = {_moveDirX}");
         GUILayout.Label($"OrientX = {_orientX}");
+        if (IsTouchingGround)
+        {
+            GUILayout.Label("OnGround");
+        } else
+        {
+            GUILayout.Label("InAir");
+        }
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
         GUILayout.Label($"Vertical Speed = {_verticalSpeed}");
         GUILayout.Label($"Dash Cooldown = {_dashCooldown}");
