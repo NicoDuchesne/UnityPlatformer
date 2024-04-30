@@ -830,7 +830,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &6480041685457909243
 MonoBehaviour:
@@ -845,6 +845,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7212136366118121974}
-  _horizontalSpeed: 5
+  _movementsSettings:
+    acceleration: 20
+    deceleration: 15
+    turnBackFrictions: 35
+    speedMax: 5
+  _dashSettings:
+    speed: 40
+    duration: 0.1
   _orientVisualRoot: {fileID: 3024582456938629764}
-  _guiDebug: 0
+  _guiDebug: 1
+  _fallSettings:
+    fallGravity: 20
+    fallSpeedMax: 10
