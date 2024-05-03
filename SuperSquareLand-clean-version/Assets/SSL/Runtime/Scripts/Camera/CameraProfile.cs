@@ -8,6 +8,17 @@ public class CameraProfile : MonoBehaviour
     [Header("Follow")]
     [SerializeField] private CameraFollowable _targetToFollow = null;
 
+    [Header("Damping")]
+    [SerializeField] private bool _useDampingHorizontally = false;
+    [SerializeField] private float _horizontalDumpingFactor = 5f;
+    [SerializeField] private bool _useDampingVertically = false;
+    [SerializeField] private float _verticalDumpingFactor = 5f;
+
+    public bool UseDampingHorizontally => _useDampingHorizontally;
+    public float HorizontalDumpingFactor => _horizontalDumpingFactor;
+    public bool UseDampingVertically => _useDampingVertically;
+    public float VerticalDumpingFactor => _verticalDumpingFactor;
+
     public CameraFollowable TargetToFollow => _targetToFollow;
 
     private Camera _camera;

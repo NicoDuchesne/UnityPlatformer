@@ -919,6 +919,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _profileType: 0
   _targetToFollow: {fileID: 0}
+  _useDampingHorizontally: 0
+  _horizontalDumpingFactor: 5
+  _useDampingVertically: 0
+  _verticalDumpingFactor: 5
 --- !u!20 &869992946
 Camera:
   m_ObjectHideFlags: 0
@@ -1540,6 +1544,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _profileType: 1
   _targetToFollow: {fileID: 732721623840024185}
+  _useDampingHorizontally: 1
+  _horizontalDumpingFactor: 7
+  _useDampingVertically: 1
+  _verticalDumpingFactor: 5
 --- !u!1 &1641381205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,6 +1823,10 @@ PrefabInstance:
     - target: {fileID: 6771865885331362632, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: m_Name
       value: SquareHero_Entity
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212136366118121974, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
