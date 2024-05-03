@@ -40,6 +40,9 @@ public class HeroEntity : MonoBehaviour
     [SerializeField] private HeroJumpSettings _jumpSettings;
     [SerializeField] private HeroFallSettings _jumpFallSettings;
 
+    //Camera Follow
+    private CameraFollowable _cameraFollowable;
+
     enum JumpState
     {
         NotJumping,
@@ -67,6 +70,13 @@ public class HeroEntity : MonoBehaviour
     public void SetMoveDirX(float dirX)
     {
         _moveDirX = dirX;
+    }
+
+    private void Awake()
+    {
+        _cameraFollowable = GetComponent<CameraFollowable>();
+        _cameraFollowable.FollowPositionX = _rigidbody.position.x;
+        _cameraFollowable.FollowPositionY = _rigidbody.position.y;
     }
 
     //Fixed Update
@@ -104,6 +114,7 @@ public class HeroEntity : MonoBehaviour
         //}
 
         _ApplyGroundDetection();
+        _UpdateCameraFollowPosition();
 
         HeroHorizontalMovementsSettings _heroHorizontalMovementsSettings = _GetCurrentHorizontalMovementsSettings();
 
@@ -280,6 +291,15 @@ public class HeroEntity : MonoBehaviour
         Vector3 newScale = _orientVisualRoot.localScale;
         newScale.x = _orientX;
         _orientVisualRoot.localScale = newScale;
+    }
+
+    private void _UpdateCameraFollowPosition()
+    {
+        _cameraFollowable.FollowPositionX = _rigidbody.position.x;
+        if (IsTouchingGround && !IsJumping)
+        {
+            _cameraFollowable.FollowPositionY = _rigidbody.position.y;
+        }
     }
 
     //Debug layout
