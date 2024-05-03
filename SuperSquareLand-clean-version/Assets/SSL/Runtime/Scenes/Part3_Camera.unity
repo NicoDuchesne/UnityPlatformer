@@ -923,6 +923,13 @@ MonoBehaviour:
   _horizontalDumpingFactor: 5
   _useDampingVertically: 0
   _verticalDumpingFactor: 5
+  _hasBounds: 0
+  _boundsRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 10
+    height: 10
 --- !u!20 &869992946
 Camera:
   m_ObjectHideFlags: 0
@@ -1548,6 +1555,13 @@ MonoBehaviour:
   _horizontalDumpingFactor: 7
   _useDampingVertically: 1
   _verticalDumpingFactor: 5
+  _hasBounds: 1
+  _boundsRect:
+    serializedVersion: 2
+    x: 80
+    y: 95
+    width: 48
+    height: 16
 --- !u!1 &1641381205
 GameObject:
   m_ObjectHideFlags: 0

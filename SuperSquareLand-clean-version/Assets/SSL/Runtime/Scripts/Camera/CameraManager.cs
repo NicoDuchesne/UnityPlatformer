@@ -34,6 +34,7 @@ public class CameraManager : MonoBehaviour
     private void Update()
     {
         Vector3 nextPosition = _FindCameraNextPosition();   
+        nextPosition = _ClampPositionIntoBounds(nextPosition);
         nextPosition = _ApplyDampling(nextPosition);
 
         if (_IsPlayingProfileTransition())
@@ -79,7 +80,7 @@ public class CameraManager : MonoBehaviour
         _currentCameraProfile = _defaultCameraProfile;
         _SetCameraPosition(_currentCameraProfile.Position);
         _SetCameraSize(_currentCameraProfile.CameraSize);
-        _SetCameraDampedPosition(_FindCameraNextPosition());
+        _SetCameraDampedPosition(_ClampPositionIntoBounds(_FindCameraNextPosition()));
     }
 
     private void _SetCameraPosition(Vector3 position)
@@ -173,6 +174,39 @@ public class CameraManager : MonoBehaviour
     {
         _dampedPosition.x = position.x;
         _dampedPosition.y = position.y;
+    }
+
+    private Vector3 _ClampPositionIntoBounds(Vector3 position)
+    {
+        if (!_currentCameraProfile.HasBounds) return position;
+
+        Rect boundsRect = _currentCameraProfile.BoundsRect;
+        Vector3 worldBottomLeft = _camera.ScreenToWorldPoint(new Vector3(0f, 0f));
+        Vector3 worldTopRight = _camera.ScreenToWorldPoint(new Vector3(_camera.pixelWidth, _camera.pixelHeight));
+        Vector2 worldScreenSize = new Vector2(worldTopRight.x - worldBottomLeft.x, worldTopRight.y - worldBottomLeft.y);
+        Vector2 worldHalfScreenSize = worldScreenSize / 2f;
+
+        if(position.x > boundsRect.xMax - worldHalfScreenSize.x)
+        {
+            position.x = boundsRect.xMax - worldHalfScreenSize.x;
+        }
+
+        if (position.x < boundsRect.xMin + worldHalfScreenSize.x)
+        {
+            position.x = boundsRect.xMin + worldHalfScreenSize.x;
+        }
+
+        if (position.y > boundsRect.yMax - worldHalfScreenSize.y)
+        {
+            position.y = boundsRect.yMax - worldHalfScreenSize.y;
+        }
+
+        if (position.y < boundsRect.yMin + worldHalfScreenSize.y)
+        {
+            position.y = boundsRect.yMin + worldHalfScreenSize.y;
+        }
+
+        return position;
     }
 
 }
