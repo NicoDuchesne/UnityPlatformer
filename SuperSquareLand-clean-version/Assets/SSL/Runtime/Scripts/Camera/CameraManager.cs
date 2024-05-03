@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class CameraManager : MonoBehaviour
@@ -27,18 +28,20 @@ public class CameraManager : MonoBehaviour
 
     private void Update()
     {
+        Vector3 nextPosition = _FindCameraNextPosition();   
+
         if (_IsPlayingProfileTransition())
         {
             _profileTransitionTimer += Time.deltaTime;
 
-            Vector3 transitionPosition = _CaluclateProfileTransitionPosition(_currentCameraProfile.Position);
+            Vector3 transitionPosition = _CaluclateProfileTransitionPosition(nextPosition);
             _SetCameraPosition(transitionPosition);
 
             float transitionSize = _CaluclateProfileTransitionCameraSize(_currentCameraProfile.CameraSize);
             _SetCameraSize(transitionSize);
         } else
         {
-            _SetCameraPosition(_currentCameraProfile.Position);
+            _SetCameraPosition(nextPosition);
             _SetCameraSize(_currentCameraProfile.CameraSize);
         }
         
@@ -109,6 +112,19 @@ public class CameraManager : MonoBehaviour
         float percent = _profileTransitionTimer / _profileTransitionDuration;
         Vector3 origin = _profileTransitionStartPosition;
         return Vector3.Lerp(origin, destination, percent);
+    }
+
+    private Vector3 _FindCameraNextPosition()
+    {
+        if (_currentCameraProfile.ProfileType == CameraProfileType.FollowTarget)
+        {
+            if (_currentCameraProfile.TargetToFollow != null)
+            {
+                return _currentCameraProfile.TargetToFollow.position;
+            }
+        }
+
+        return _currentCameraProfile.Position;
     }
 
 }

@@ -917,6 +917,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f0799299754a109c3f3f9e5153f6f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _profileType: 0
+  _targetToFollow: {fileID: 0}
 --- !u!20 &869992946
 Camera:
   m_ObjectHideFlags: 0
@@ -1531,6 +1533,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f0799299754a109c3f3f9e5153f6f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _profileType: 1
+  _targetToFollow: {fileID: 732721623840024182}
 --- !u!1 &1641381205
 GameObject:
   m_ObjectHideFlags: 0
