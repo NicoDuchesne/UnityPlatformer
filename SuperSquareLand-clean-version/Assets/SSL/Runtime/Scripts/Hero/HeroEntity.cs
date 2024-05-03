@@ -17,7 +17,7 @@ public class HeroEntity : MonoBehaviour
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
     [SerializeField] private float _dashCooldown = 2f;
-    private bool isDashing = false;
+    //private bool isDashing = false;
 
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;

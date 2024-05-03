@@ -779,6 +779,7 @@ GameObject:
   - component: {fileID: 182482925853841835}
   - component: {fileID: 7212136366118121974}
   - component: {fileID: 6480041685457909243}
+  - component: {fileID: 3988098103218142208}
   m_Layer: 0
   m_Name: SquareHero_Entity
   m_TagString: Untagged
@@ -821,7 +822,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3aa90e189c58491468a67afb3329e400, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -831,7 +832,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6480041685457909243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845,16 +846,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7212136366118121974}
-  _movementsSettings:
+  _groundHorizontalMovementsSettings:
     acceleration: 20
     deceleration: 15
-    turnBackFrictions: 35
+    turnBackFrictions: 25
     speedMax: 5
+  _airHorizontalMovementsSettings:
+    acceleration: 20
+    deceleration: 7
+    turnBackFrictions: 100
+    speedMax: 6
   _dashSettings:
     speed: 40
     duration: 0.1
+  _dashCooldown: 2
   _orientVisualRoot: {fileID: 3024582456938629764}
-  _guiDebug: 1
+  _guiDebug: 0
   _fallSettings:
     fallGravity: 20
     fallSpeedMax: 10
+  _groundDetector: {fileID: 3988098103218142208}
+  _jumpSettings:
+    jumpSpeed: 8
+    jumpMaxDuration: 0.25
+    jumpMinDuration: 0.1
+  _jumpFallSettings:
+    fallGravity: 60
+    fallSpeedMax: 20
+--- !u!114 &3988098103218142208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6771865885331362632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bba7a1362b39e449a87646fdc5a00af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectionPoints:
+  - {fileID: 203643196923139263}
+  - {fileID: 5060177279040936632}
+  - {fileID: 6662331843491865519}
+  _detectionLength: 0.1
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
