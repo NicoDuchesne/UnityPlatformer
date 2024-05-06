@@ -16,7 +16,9 @@ public class HeroEntity : MonoBehaviour
     private float _moveDirX = 0f;
 
     [Header("Dash")]
-    [SerializeField] private HeroDashSettings _dashSettings;
+    [FormerlySerializedAs("_dashSettings")]
+    [SerializeField] private HeroDashSettings _groundDashSettings;
+    [SerializeField] private HeroDashSettings _airDashSettings;
     private bool _isDashing = false;
     private float _dashTimer = 0f;
     private bool _canDash = false;
@@ -75,6 +77,7 @@ public class HeroEntity : MonoBehaviour
         if (_canDash)
         {
             _isDashing = true;
+            _jumpState = JumpState.NotJumping;
             _dashTimer = 0f;
 
             _canDash = false;
@@ -100,13 +103,15 @@ public class HeroEntity : MonoBehaviour
     {
         _ApplyGroundDetection();
         _UpdateCameraFollowPosition();
-        _UpdateDashCooldown();
+
+        HeroDashSettings _heroDashSettings = _GetCurrentHeroDashSettings();
+        _UpdateDashCooldown(_heroDashSettings);
 
         HeroHorizontalMovementsSettings _heroHorizontalMovementsSettings = _GetCurrentHorizontalMovementsSettings();
 
         if (_isDashing)
         {
-            _UpdateDash();
+            _UpdateDash(_heroDashSettings);
         }
         else
         {
@@ -129,7 +134,7 @@ public class HeroEntity : MonoBehaviour
         }
         else
         {
-            if (!IsTouchingGround)
+            if (!IsTouchingGround && !_isDashing)
             {
                 _ApplyFallGravity(_fallSettings);
             }
@@ -159,10 +164,10 @@ public class HeroEntity : MonoBehaviour
         }
     }
 
-    private void _UpdateDashCooldown()
+    private void _UpdateDashCooldown(HeroDashSettings settings)
     {
         _dashCooldownTimer += Time.fixedDeltaTime;
-        if (_dashCooldownTimer < _dashSettings.dashCooldown)
+        if (_dashCooldownTimer < settings.dashCooldown)
         {
             _canDash = false;
         } else
@@ -170,12 +175,12 @@ public class HeroEntity : MonoBehaviour
             _canDash = true;
         }
     }
-    private void _UpdateDash()
+    private void _UpdateDash(HeroDashSettings settings)
     {
         _dashTimer += Time.fixedDeltaTime;
-        if (_dashTimer < _dashSettings.dashDuration)
+        if (_dashTimer < settings.dashDuration)
         {
-            _horizontalSpeed = _dashSettings.dashSpeed;
+            _horizontalSpeed = settings.dashSpeed;
         } else
         {
             _isDashing = false;
@@ -256,6 +261,12 @@ public class HeroEntity : MonoBehaviour
         }
         
     }
+    
+    private HeroDashSettings _GetCurrentHeroDashSettings()
+    {
+        return IsTouchingGround ? _groundDashSettings : _airDashSettings;
+    }
+
     private void _UpdateHorizontalSpeed(HeroHorizontalMovementsSettings settings)
     {
         if (_moveDirX != 0f)
