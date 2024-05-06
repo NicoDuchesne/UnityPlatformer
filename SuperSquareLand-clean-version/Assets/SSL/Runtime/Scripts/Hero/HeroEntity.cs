@@ -41,6 +41,11 @@ public class HeroEntity : MonoBehaviour
     [SerializeField] private GroundDetector _groundDetector;
     public bool IsTouchingGround { get; private set; }
 
+    [Header("Wall")]
+    [SerializeField] private WallDetector _wallDetector;
+    public bool IsTouchingWallRight { get; private set; }
+    public bool IsTouchingWallLeft { get; private set; }
+
     [Header("Jump")]
     [SerializeField] private HeroJumpSettings _jumpSettings;
     [SerializeField] private HeroFallSettings _jumpFallSettings;
@@ -102,6 +107,7 @@ public class HeroEntity : MonoBehaviour
     private void FixedUpdate()
     {
         _ApplyGroundDetection();
+        _ApplyWallDetection();
         _UpdateCameraFollowPosition();
 
         HeroDashSettings _heroDashSettings = _GetCurrentHeroDashSettings();
@@ -142,6 +148,11 @@ public class HeroEntity : MonoBehaviour
             {
                 _ResetVerticalSpeed();
             }
+
+            if (_IsWallInTheWay())
+            {
+                _ResetHorizontalSpeed();
+            }
         }
 
         _ApplyHorizontalSpeed();
@@ -178,7 +189,7 @@ public class HeroEntity : MonoBehaviour
     private void _UpdateDash(HeroDashSettings settings)
     {
         _dashTimer += Time.fixedDeltaTime;
-        if (_dashTimer < settings.dashDuration)
+        if (_dashTimer < settings.dashDuration && !_IsWallInTheWay())
         {
             _horizontalSpeed = settings.dashSpeed;
         } else
@@ -227,6 +238,17 @@ public class HeroEntity : MonoBehaviour
     private void _ApplyGroundDetection()
     {
         IsTouchingGround = _groundDetector.DetectGroundNearBy();
+    }
+
+    private void _ApplyWallDetection()
+    {
+        IsTouchingWallRight = _wallDetector.DetectWallRight();
+        IsTouchingWallLeft = _wallDetector.DetectWallLeft();
+    }
+
+    private bool _IsWallInTheWay()
+    {
+        return (IsTouchingWallRight && _moveDirX > 0) || (IsTouchingWallLeft && _moveDirX < 0);
     }
     private void _ApplyFallGravity(HeroFallSettings settings)
     {
@@ -362,6 +384,14 @@ public class HeroEntity : MonoBehaviour
         } else
         {
             GUILayout.Label("InAir");
+        }
+        if (IsTouchingWallLeft || IsTouchingWallRight)
+        {
+            GUILayout.Label("OnWall");
+        }
+        else
+        {
+            GUILayout.Label("NoWall");
         }
         GUILayout.Label($"Jump State = {_jumpState}");
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
