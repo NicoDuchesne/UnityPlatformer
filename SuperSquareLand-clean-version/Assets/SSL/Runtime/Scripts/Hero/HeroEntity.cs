@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,6 +17,10 @@ public class HeroEntity : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
+    private bool _isDashing = false;
+    private float _dashTimer = 0f;
+    private bool _canDash = false;
+    private float _dashCooldownTimer = 0f;
 
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
@@ -37,18 +42,17 @@ public class HeroEntity : MonoBehaviour
     [Header("Jump")]
     [SerializeField] private HeroJumpSettings _jumpSettings;
     [SerializeField] private HeroFallSettings _jumpFallSettings;
-
-    //Camera Follow
-    private CameraFollowable _cameraFollowable;
-
+    private JumpState _jumpState = JumpState.NotJumping;
+    private float _jumpTimer = 0f;
     enum JumpState
     {
         NotJumping,
         JumpImpulsion,
         Falling
     }
-    private JumpState _jumpState = JumpState.NotJumping;
-    private float _jumpTimer = 0f;
+    
+
+    private CameraFollowable _cameraFollowable;
 
 
     //Public functions
@@ -63,6 +67,19 @@ public class HeroEntity : MonoBehaviour
     {
         _jumpState = JumpState.JumpImpulsion;
         _jumpTimer = 0f;
+    }
+
+    public void DashStart()
+    {
+        if (_canDash)
+        {
+            _isDashing = true;
+            _dashTimer = 0f;
+
+            _canDash = false;
+            _dashCooldownTimer = 0f;
+        }
+        
     }
 
     public void SetMoveDirX(float dirX)
@@ -82,18 +99,28 @@ public class HeroEntity : MonoBehaviour
     {
         _ApplyGroundDetection();
         _UpdateCameraFollowPosition();
+        _UpdateDashCooldown();
 
         HeroHorizontalMovementsSettings _heroHorizontalMovementsSettings = _GetCurrentHorizontalMovementsSettings();
 
-        if (_AreOrientAndMovementOpposite())
+        if (_isDashing)
         {
-            _TurnBack(_heroHorizontalMovementsSettings);
+            _UpdateDash();
         }
         else
         {
-            _UpdateHorizontalSpeed(_heroHorizontalMovementsSettings);
-            _ChangeOrientFromHorinzontalMovement();
+            if (_AreOrientAndMovementOpposite())
+            {
+                _TurnBack(_heroHorizontalMovementsSettings);
+            }
+            else
+            {
+                _UpdateHorizontalSpeed(_heroHorizontalMovementsSettings);
+                _ChangeOrientFromHorinzontalMovement();
+            }
+
         }
+
 
         if (IsJumping)
         {
@@ -131,6 +158,30 @@ public class HeroEntity : MonoBehaviour
         }
     }
 
+    private void _UpdateDashCooldown()
+    {
+        _dashCooldownTimer += Time.fixedDeltaTime;
+        if (_dashCooldownTimer < _dashSettings.dashCooldown)
+        {
+            _canDash = false;
+        } else
+        {
+            _canDash = true;
+        }
+    }
+    private void _UpdateDash()
+    {
+        _dashTimer += Time.fixedDeltaTime;
+        if (_dashTimer < _dashSettings.dashDuration)
+        {
+            _horizontalSpeed = _dashSettings.dashSpeed;
+        } else
+        {
+            _isDashing = false;
+            _ResetHorizontalSpeed();
+        }
+    }
+
     private void _UpdateJumpStateFalling()
     {
         if(!IsTouchingGround)
@@ -161,6 +212,11 @@ public class HeroEntity : MonoBehaviour
     private void _ResetVerticalSpeed()
     {
         _verticalSpeed = 0f;
+    }
+
+    private void _ResetHorizontalSpeed()
+    {
+        _horizontalSpeed = 0f;
     }
     private void _ApplyGroundDetection()
     {
@@ -288,6 +344,7 @@ public class HeroEntity : MonoBehaviour
         GUILayout.Label($"Jump State = {_jumpState}");
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
         GUILayout.Label($"Vertical Speed = {_verticalSpeed}");
+        GUILayout.Label($"can dash = {_canDash}");
         GUILayout.EndVertical();
     }
 }

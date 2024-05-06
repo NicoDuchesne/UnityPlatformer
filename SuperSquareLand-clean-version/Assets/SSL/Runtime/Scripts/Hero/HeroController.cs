@@ -47,7 +47,12 @@ public class HeroController : MonoBehaviour
             _UpdateCoyoteTime();
         }
 
-        if(_GetInputDownJump())
+        if (_GetInputDash())
+        {
+            _entity.DashStart();
+        }
+
+            if (_GetInputDownJump())
         {
             if ((_entity.IsTouchingGround || _IsCoyoteTimeActive()) && !_entity.IsJumping)
             {
@@ -76,6 +81,10 @@ public class HeroController : MonoBehaviour
         _entityWasTouchingGround = _entity.IsTouchingGround;
     }
 
+    private bool _GetInputDash()
+    {
+        return Input.GetKey(KeyCode.E);
+    }
     private bool _EntityHasExitGround()
     {
         return _entityWasTouchingGround && !_entity.IsTouchingGround;
@@ -116,8 +125,6 @@ public class HeroController : MonoBehaviour
     {
         return _jumpBufferTimer < _jumpBufferDuration;
     }
-
-    
 
     private bool _GetInputJump()
     {

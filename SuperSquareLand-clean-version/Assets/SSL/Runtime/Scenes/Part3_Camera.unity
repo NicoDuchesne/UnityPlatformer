@@ -1717,6 +1717,10 @@ PrefabInstance:
       propertyPath: _entity
       value: 
       objectReference: {fileID: 2055032675}
+    - target: {fileID: 2715573749518700230, guid: 6ad9f89a1de0f6849aa1265154727cfe, type: 3}
+      propertyPath: _guiDebug
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3451212056107555382, guid: 6ad9f89a1de0f6849aa1265154727cfe, type: 3}
       propertyPath: m_Name
       value: SquareHero_Controller
@@ -1832,7 +1836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: _guiDebug
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6771865885331362632, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: m_Name
