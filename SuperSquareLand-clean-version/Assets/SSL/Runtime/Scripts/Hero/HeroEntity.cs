@@ -16,8 +16,6 @@ public class HeroEntity : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
-    [SerializeField] private float _dashCooldown = 2f;
-    //private bool isDashing = false;
 
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
@@ -82,37 +80,6 @@ public class HeroEntity : MonoBehaviour
     //Fixed Update
     private void FixedUpdate()
     {
-        //Added code for dash
-        //if (_dashCooldown > 0f)
-        //{
-        //    _dashCooldown -= Time.fixedDeltaTime;
-        //}
-
-        //if (_dashCooldown <= 0f && Input.GetKey(KeyCode.E))
-        //{
-        //    if (_dashSettings.duration > 0f)
-        //    {
-        //        _horizontalSpeed = 40f;
-        //        _dashSettings.duration -= Time.fixedDeltaTime;
-        //        isDashing = true;
-        //    }
-        //    else
-        //    {
-        //        isDashing = false;
-        //        _horizontalSpeed = 0f;
-        //        _dashCooldown = 2f;
-        //        _dashSettings.duration = 0.1f;
-        //    }
-        //}
-
-
-        //if (!isDashing)
-        //{
-
-            //Partie du code du cours à pas executer
-
-        //}
-
         _ApplyGroundDetection();
         _UpdateCameraFollowPosition();
 
@@ -321,7 +288,6 @@ public class HeroEntity : MonoBehaviour
         GUILayout.Label($"Jump State = {_jumpState}");
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
         GUILayout.Label($"Vertical Speed = {_verticalSpeed}");
-        GUILayout.Label($"Dash Cooldown = {_dashCooldown}");
         GUILayout.EndVertical();
     }
 }

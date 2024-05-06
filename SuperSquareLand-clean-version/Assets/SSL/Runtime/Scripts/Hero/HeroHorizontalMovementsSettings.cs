@@ -10,16 +10,4 @@ public class HeroHorizontalMovementsSettings
     public float deceleration = 15f;
     public float turnBackFrictions = 35f;
     public float speedMax = 5f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
