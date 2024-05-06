@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -47,9 +48,11 @@ public class HeroEntity : MonoBehaviour
     public bool IsTouchingWallLeft { get; private set; }
 
     [Header("Jump")]
-    [SerializeField] private HeroJumpSettings _jumpSettings;
+    [SerializeField] private List<HeroJumpSettings> _jumpAllSettings;
     [SerializeField] private HeroFallSettings _jumpFallSettings;
     [SerializeField] private HeroHorizontalMovementsSettings _jumpHorizontalMovementsSettings;
+    private HeroJumpSettings _jumpSettings;
+    public int _jumpNumber = 0;
     private JumpState _jumpState = JumpState.NotJumping;
     private float _jumpTimer = 0f;
     enum JumpState
@@ -64,6 +67,7 @@ public class HeroEntity : MonoBehaviour
 
 
     //Public functions
+    public bool HasNextJump => _jumpNumber+1 < _jumpAllSettings.Count;
     public bool IsJumpMinDurationReached => _jumpTimer >= _jumpSettings.jumpMinDuration;
     public bool IsJumpImpulsing => _jumpState == JumpState.JumpImpulsion;
     public void StopJumpImpulsion()
@@ -73,6 +77,7 @@ public class HeroEntity : MonoBehaviour
     public bool IsJumping => _jumpState != JumpState.NotJumping;
     public void JumpStart()
     {
+        _jumpSettings = _jumpAllSettings[_jumpNumber];
         _jumpState = JumpState.JumpImpulsion;
         _jumpTimer = 0f;
     }
@@ -397,6 +402,7 @@ public class HeroEntity : MonoBehaviour
         GUILayout.Label($"Horizontal Speed = {_horizontalSpeed}");
         GUILayout.Label($"Vertical Speed = {_verticalSpeed}");
         GUILayout.Label($"can dash = {_canDash}");
+        GUILayout.Label($"jump number = {_jumpNumber}");
         GUILayout.EndVertical();
     }
 }

@@ -52,20 +52,30 @@ public class HeroController : MonoBehaviour
             _entity.DashStart();
         }
 
-            if (_GetInputDownJump())
+        if (_GetInputDownJump())
         {
             if ((_entity.IsTouchingGround || _IsCoyoteTimeActive()) && !_entity.IsJumping)
             {
+                _entity._jumpNumber = 0;
                 _entity.JumpStart();
-            } else
+            }
+            else if (!_entity.IsTouchingGround && !_entity.IsJumpImpulsing && _entity.HasNextJump)
+            {
+                _entity._jumpNumber += 1;
+                _entity.JumpStart();
+            }
+            else
             {
                 _ResetJumpBuffer();
             }
+
+            
         }
 
         if (_IsJumpBufferActive())
         {
             if ((_entity.IsTouchingGround || _IsCoyoteTimeActive()) && !_entity.IsJumping) {
+                _entity._jumpNumber = 0;
                 _entity.JumpStart();
             }
         }

@@ -2101,8 +2101,24 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: _airDashSettings.dashCooldown
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[0].jumpSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[1].jumpSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[2].jumpSpeed
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: _jumpHorizontalMovementsSettings.speedMax
@@ -2111,6 +2127,30 @@ PrefabInstance:
     - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: _jumpHorizontalMovementsSettings.deceleration
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[0].jumpMaxDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[0].jumpMinDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[1].jumpMaxDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[1].jumpMinDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[2].jumpMaxDuration
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+      propertyPath: _jumpAllSettings.Array.data[2].jumpMinDuration
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6480041685457909243, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
       propertyPath: _jumpHorizontalMovementsSettings.turnBackFrictions
