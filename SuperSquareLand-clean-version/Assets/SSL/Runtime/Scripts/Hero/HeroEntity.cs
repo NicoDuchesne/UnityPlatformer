@@ -38,6 +38,10 @@ public class HeroEntity : MonoBehaviour
     [Header("Fall")]
     [SerializeField] private HeroFallSettings _fallSettings;
 
+    [Header("Slide")]
+    [SerializeField] private float _wallSlideSpeed = 2f;
+    private bool _IsWallSliding = false;
+
     [Header("Ground")]
     [SerializeField] private GroundDetector _groundDetector;
     public bool IsTouchingGround { get; private set; }
@@ -51,8 +55,8 @@ public class HeroEntity : MonoBehaviour
     [SerializeField] private List<HeroJumpSettings> _jumpAllSettings;
     [SerializeField] private HeroFallSettings _jumpFallSettings;
     [SerializeField] private HeroHorizontalMovementsSettings _jumpHorizontalMovementsSettings;
-    private HeroJumpSettings _jumpSettings;
     public int _jumpNumber = 0;
+    private HeroJumpSettings _jumpSettings;
     private JumpState _jumpState = JumpState.NotJumping;
     private float _jumpTimer = 0f;
     enum JumpState
@@ -67,6 +71,7 @@ public class HeroEntity : MonoBehaviour
 
 
     //Public functions
+    private bool IsTouchingWall => IsTouchingWallRight || IsTouchingWallLeft;
     public bool HasNextJump => _jumpNumber+1 < _jumpAllSettings.Count;
     public bool IsJumpMinDurationReached => _jumpTimer >= _jumpSettings.jumpMinDuration;
     public bool IsJumpImpulsing => _jumpState == JumpState.JumpImpulsion;
@@ -160,6 +165,9 @@ public class HeroEntity : MonoBehaviour
             }
         }
 
+
+
+
         _ApplyHorizontalSpeed();
         _ApplyVerticalSpeed();
     }
@@ -250,6 +258,8 @@ public class HeroEntity : MonoBehaviour
         IsTouchingWallRight = _wallDetector.DetectWallRight();
         IsTouchingWallLeft = _wallDetector.DetectWallLeft();
     }
+    
+    
 
     private bool _IsWallInTheWay()
     {
